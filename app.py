@@ -1,15 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 import json
 import re
-
 app = Flask(__name__)
 
-# Load scraped data once at startup
 with open('scraped.json', 'r', encoding='utf-8') as f:
     scraped_data = json.load(f)
 
 def word_overlap_score(text, query):
-    # Compute basic word overlap count between two strings
     text_words = set(re.findall(r'\w+', text.lower()))
     query_words = set(re.findall(r'\w+', query.lower()))
     return len(text_words.intersection(query_words))
@@ -29,9 +26,9 @@ def send_message():
     best_match = None
     best_score = 0
 
-    # Search all pages for best matching paragraph or heading
+   
     for page in scraped_data:
-        # Check headings
+        
         for heading_list in page.get('headings', {}).values():
             for heading in heading_list:
                 score = word_overlap_score(heading, user_message)
@@ -39,7 +36,7 @@ def send_message():
                     best_score = score
                     best_match = heading
 
-        # Check paragraphs
+       
         for para in page.get('paragraphs', []):
             score = word_overlap_score(para, user_message)
             if score > best_score:
