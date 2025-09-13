@@ -1,12 +1,12 @@
 # Assistant – Occams Advisory Scraper & Chatbot
 
-## . Running App
+## Running App
 
-The project runs as a Flask-based web app (local or hosted). It scrapes data from [occamsadvisory.com](https://occamsadvisory.com), stores it in a local JSON file, and allows users to query that data through a simple chatbot interface.
+The project runs as a **Flask-based web app** (local or hosted). It scrapes data from [occamsadvisory.com](https://occamsadvisory.com), stores it in a local JSON file, and allows users to query that data through a simple chatbot interface.
 
 ---
 
-## . Architecture Diagram
+## Architecture Diagram
 
 ```
         +----------------+
@@ -26,47 +26,61 @@ The project runs as a Flask-based web app (local or hosted). It scrapes data fro
 
 ---
 
-## . Key Design Choices & Trade-offs
+## Key Design Choices & Trade-offs
 
-* Lightweight stack: Used Flask + JSON instead of a heavy DB for simplicity. Trade-off: scalability is limited, but setup is easy.
-* Scraping-based knowledge: Ensures no hallucinations (all answers come from scraped data). Trade-off: knowledge goes stale unless scraper is re-run.
-* Minimal dependencies:*Avoided large ML models for performance and reliability. Trade-off: limited conversational flexibility.
-
----
-
-## . Threat Model (Brief)
-
-* PII handling: The app does not collect or store sensitive user data beyond chat inputs.
-* Input sanitization: User queries are sanitized to prevent injection attacks.
-* Risk mitigation: Runs in a sandboxed environment with no external write permissions beyond `scraped.json`.
+* **Lightweight stack:** Used Flask + JSON instead of a heavy DB for simplicity. Trade-off: scalability is limited, but setup is easy.
+* **Scraping-based knowledge:** Ensures no hallucinations (all answers come from scraped data). Trade-off: knowledge goes stale unless scraper is re-run.
+* **Minimal dependencies:** Avoided large ML models for performance and reliability. Trade-off: limited conversational flexibility.
 
 ---
 
-## . Scraping Approach
+## Threat Model (Brief)
 
-* Tools used: Python, BeautifulSoup4, Requests.
-* Process:
+* **PII handling:** The app does not collect or store sensitive user data beyond chat inputs.
+* **Input sanitization:** User queries are sanitized to prevent injection attacks.
+* **Risk mitigation:** Runs in a sandboxed environment with no external write permissions beyond `scraped.json`.
+
+---
+
+## Scraping Approach
+
+* **Tools used:** Python, BeautifulSoup4, Requests.
+* **Process:**
 
   1. Fetches HTML from target pages.
   2. Extracts structured text (services, categories, etc.).
   3. Stores results in `scraped.json`.
-* Output: A structured JSON knowledge file for querying.
+* **Output:** A structured JSON knowledge file for querying.
 
 ---
 
-## . Failure Modes
+## Failure Modes
 
-* Site structure changes: Scraper may fail → handled with try/except and logs.
-* Stale knowledge: JSON needs manual refresh → can be automated with cron.
-* Unknown question: Returns safe fallback message instead of breaking.
-
----
-
+* **Site structure changes:** Scraper may fail → handled with try/except and logs.
+* **Stale knowledge:** JSON needs manual refresh → can be automated with cron.
+* **Unknown question:** Returns safe fallback message instead of breaking.
 
 ---
 
+## Local Knowledge File / DB
 
-##  Getting Started
+* `scraped.json` is the local database generated from scraping.
+* Stores structured knowledge used by chatbot.
+* Chat history is stored locally (session-based).
+
+---
+
+## Minimal Tests
+
+Implemented tests include:
+
+* **Valid/invalid email & phone inputs** (regex validation).
+* **Unknown question** returns safe fallback: *“Sorry, I don’t have that information.”*
+* **Chat nudges** user toward task completion at least once.
+
+---
+
+## Getting Started
 
 ### Installation
 
@@ -82,14 +96,14 @@ pip install -r requirements.txt
 python app.py
 ```
 
-
 ---
 
-## 11. Future Improvements
+## Future Improvements
 
 * Automate scraping with scheduler.
 * Add fuzzy search (Whoosh/SQLite FTS).
 * Improve frontend UX with typing indicators & source links.
+
 
 
 
