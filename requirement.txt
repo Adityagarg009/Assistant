@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 Flask==3.0.3
 requests==2.32.3
 beautifulsoup4==4.12.3
+=======
+Flask==3.0.3
+requests==2.32.3
+beautifulsoup4==4.12.3
+>>>>>>> 337dbce0d098f9c83eb25fae7f86737444cf2920
